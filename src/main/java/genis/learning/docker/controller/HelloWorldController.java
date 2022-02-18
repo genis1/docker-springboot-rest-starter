@@ -1,6 +1,6 @@
 package genis.learning.docker.controller;
 
-import genis.learning.docker.service.TestService;
+import genis.learning.docker.service.IntegerCalculatorService;
 import genis.learning.docker.vo.DivisionRequestVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 		@Tag(name = "Testing", description = "Endpoints used to test integration with the application.")})
 public class HelloWorldController {
 
-	private final TestService service;
+	private final IntegerCalculatorService service;
 
-	public HelloWorldController(TestService service) {
+	public HelloWorldController(IntegerCalculatorService service) {
 		this.service = service;
 	}
 
@@ -56,7 +56,7 @@ public class HelloWorldController {
 									examples = @ExampleObject(value = "3.5"),
 									schema = @Schema(implementation = Float.class)
 							)),
-					@ApiResponse(responseCode = "422", description = TestService.DIVISOR_CANNOT_BE_0)
+					@ApiResponse(responseCode = "422", description = IntegerCalculatorService.DIVISOR_CANNOT_BE_0)
 			}
 	)
 	ResponseEntity<Float> divide(

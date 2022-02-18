@@ -4,7 +4,7 @@ import genis.learning.docker.exception.IllegalUserInputException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestService {
+public class IntegerCalculatorService {
 
 	public static final String DIVISOR_CANNOT_BE_0 = "Divisor cannot be 0";
 
