@@ -1,6 +1,7 @@
 package genis.learning.docker.controller;
 
-import genis.learning.docker.exception.IllegalUserInputException;
+import genis.learning.docker.pagination.PageRequest;
+import genis.learning.docker.pagination.PaginationExceptionMessage;
 import genis.learning.docker.service.CustomerService;
 import genis.learning.docker.vo.CustomerDataVo;
 import genis.learning.docker.vo.CustomerVo;
@@ -12,11 +13,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static genis.learning.docker.service.CustomerService.CUSTOMER_ID_DOES_NOT_EXIST;
-import static genis.learning.docker.service.CustomerService.CUSTOMER_NAME_CANNOT_BE_EMTPY;
+import java.util.List;
+
+import static genis.learning.docker.service.CustomerService.*;
 
 @RestController
 @RequestMapping("customer")
@@ -56,7 +61,7 @@ public class CustomerController {
 	@Operation(
 			summary = "Reads a customers.",
 			description = "Finds a customer by its id and returns its value, fails if it doesn't exist.",
-			operationId = "readCustomers",
+			operationId = "readCustomer",
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Request successful.",
 							content = @Content(
@@ -68,8 +73,28 @@ public class CustomerController {
 	)
 	public CustomerVo readCustomer(@Parameter(description = "Id of the customer being read.")
 								   @PathVariable() Integer id) {
-		return service.read(id)
-				.orElseThrow(() -> new IllegalUserInputException(CUSTOMER_ID_DOES_NOT_EXIST + " Id used was: " + id));
+		return service.read(id);
+	}
+
+	@GetMapping()
+	@Operation(
+			summary = "Reads customers paginated and filtered.",
+			description = "Reads customers paginated and filtered, returns an empty result if nothing was found.",
+			operationId = "readCustomers",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Request successful.",
+							content = @Content(
+									schema = @Schema(implementation = PageImplCustomer.class)
+							)),
+					@ApiResponse(responseCode = "422", description = CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY
+					+" "+ PaginationExceptionMessage.PAGE_SIZE_MUST_NOT_BE_LESS_THAN_ONE)
+			}
+	)
+	public Page<CustomerVo> readCustomers(@Parameter(description = "Customer data used as a filter.")
+												  CustomerDataVo customerDataVo,
+										  @Parameter(description = "Pagination data to use.")
+												  PageRequest pageRequest) {
+		return service.read(customerDataVo, pageRequest);
 	}
 
 
@@ -84,7 +109,7 @@ public class CustomerController {
 									examples = @ExampleObject(value = CUSTOMER_VO_EXAMPLE),
 									schema = @Schema(implementation = CustomerVo.class)
 							)),
-					@ApiResponse(responseCode = "422", description = CUSTOMER_NAME_CANNOT_BE_EMTPY + "\n" +
+					@ApiResponse(responseCode = "422", description = CUSTOMER_NAME_CANNOT_BE_EMTPY + "\r\n" +
 							CUSTOMER_ID_DOES_NOT_EXIST)
 			}
 	)
@@ -111,5 +136,14 @@ public class CustomerController {
 			@PathVariable() Integer id) {
 		service.delete(id);
 		return ResponseEntity.ok().build();
+	}
+
+	/**
+	 * This classed is only used to define the swagger schema annotation.
+	 */
+	private abstract static class PageImplCustomer extends PageImpl<CustomerVo> {
+		public PageImplCustomer(List<CustomerVo> content, Pageable pageable, long total) {
+			super(content, pageable, total);
+		}
 	}
 }

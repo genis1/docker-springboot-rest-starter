@@ -3,15 +3,18 @@ package genis.learning.docker.service;
 import genis.learning.docker.entities.CustomerEntity;
 import genis.learning.docker.exception.IllegalUserInputException;
 import genis.learning.docker.mappers.CustomerMapper;
+import genis.learning.docker.pagination.PageRequest;
 import genis.learning.docker.repository.CustomerRepository;
 import genis.learning.docker.vo.CustomerDataVo;
 import genis.learning.docker.vo.CustomerVo;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -19,7 +22,9 @@ public class CustomerService {
 
 	public static final String CUSTOMER_NAME_CANNOT_BE_EMTPY = "Customer name cannot be emtpy.";
 	public static final String CUSTOMER_ID_DOES_NOT_EXIST = "Customer id does not exist.";
-	private static final Function<Integer,String> CUSTOMER_ID_DOES_NOT_EXIST_MESSAGE_BUILDER = (Integer id) -> CUSTOMER_ID_DOES_NOT_EXIST + " Id used was: " + id;
+	private static final Function<Integer, String> CUSTOMER_ID_DOES_NOT_EXIST_MESSAGE_BUILDER = (Integer id) -> CUSTOMER_ID_DOES_NOT_EXIST + " Id used was: " + id;
+	public static final String CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY = "Customer cannot be sorted by the specified property.";
+	private static final Function<String, String> CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY_WITH_MESSAGE = (String message) -> CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY + " Error details: " + message;
 	private final CustomerMapper mapper;
 	private final CustomerRepository repository;
 
@@ -33,9 +38,20 @@ public class CustomerService {
 		return mapper.toVo(repository.save(mapper.toEntity(customerVo)));
 	}
 
-	public Optional<CustomerVo> read(Integer id) {
+	public Page<CustomerVo> read(CustomerDataVo filter, PageRequest pageRequest) {
+		final CustomerEntity enttityFilter = mapper.toEntity(filter);
+		try {
+			return repository.findAll(Example.of(enttityFilter), pageRequest.build())
+					.map(mapper::toVo);
+		} catch (PropertyReferenceException e) {
+			throw new IllegalUserInputException(CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY_WITH_MESSAGE.apply(e.getMessage()));
+		}
+	}
+
+	public CustomerVo read(Integer id) {
 		return repository.findById(id)
-				.map(mapper::toVo);
+				.map(mapper::toVo)
+				.orElseThrow(() -> new IllegalUserInputException(CUSTOMER_ID_DOES_NOT_EXIST_MESSAGE_BUILDER.apply(id)));
 	}
 
 	public CustomerVo update(Integer id, CustomerDataVo customerDataVo) throws EntityNotFoundException {
