@@ -79,7 +79,7 @@ public class CustomerController {
 	@GetMapping()
 	@Operation(
 			summary = "Reads customers paginated and filtered.",
-			description = "Reads customers paginated and filtered, returns an empty result if nothing was found.",
+			description = "Reads customers paginated and filtered, returns an empty result if nothing was found. It will search for exact matches of the informed fields.",
 			operationId = "readCustomers",
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Request successful.",
@@ -87,7 +87,7 @@ public class CustomerController {
 									schema = @Schema(implementation = PageImplCustomer.class)
 							)),
 					@ApiResponse(responseCode = "422", description = CUSTOMER_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY
-					+" "+ PaginationExceptionMessage.PAGE_SIZE_MUST_NOT_BE_LESS_THAN_ONE)
+							+ " " + PaginationExceptionMessage.PAGE_SIZE_MUST_NOT_BE_LESS_THAN_ONE)
 			}
 	)
 	public Page<CustomerVo> readCustomers(@Parameter(description = "Customer data used as a filter.")
