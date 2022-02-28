@@ -1,4 +1,4 @@
-package genis.learning.docker.customers;
+package genis.learning.docker.customers.vo;
 
 import lombok.Data;
 

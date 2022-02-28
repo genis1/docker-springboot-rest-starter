@@ -1,6 +1,8 @@
 package genis.learning.docker.customers;
 
 import genis.learning.docker.common.pagination.PageRequest;
+import genis.learning.docker.customers.vo.CustomerDataVo;
+import genis.learning.docker.customers.vo.CustomerVo;
 import org.springframework.data.domain.Page;
 
 public interface CustomerService {

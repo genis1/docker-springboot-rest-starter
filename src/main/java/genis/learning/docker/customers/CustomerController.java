@@ -2,6 +2,8 @@ package genis.learning.docker.customers;
 
 import genis.learning.docker.common.pagination.PageRequest;
 import genis.learning.docker.common.pagination.PaginationExceptionMessage;
+import genis.learning.docker.customers.vo.CustomerDataVo;
+import genis.learning.docker.customers.vo.CustomerVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
