@@ -20,8 +20,8 @@ import static org.apache.tomcat.util.buf.StringUtils.join;
  */
 @Log4j2
 public class GenerateCRUD {
-	private final static String templateName = "customer";
-	private final static String templatePackageName = "customers";
+	private final static String templateName = "version";
+	private final static String templatePackageName = "versioning";
 	private final static String generatedName = "version";
 	private final static String generatedPackageName = "versioning";
 
@@ -37,8 +37,9 @@ public class GenerateCRUD {
 
 	private static final List<String> generatedAttributes = List.of("name"); //Reversed order, name is mandatory.
 
-	private static final String script = "-- changeset genis.guillem.mimo:create-table-customers\n" +
-			"CREATE TABLE `customers`\n" +
+	private static final String script = "\n" +
+			"-- changeset genis.guillem.mimo:create-table-versions\n" +
+			"CREATE TABLE `versions`\n" +
 			"(\n" +
 			"    `id`   INT          NOT NULL AUTO_INCREMENT,\n" +
 			"    `name` VARCHAR(255) NULL,\n" +
@@ -85,6 +86,7 @@ public class GenerateCRUD {
 	}
 
 	private static List<String> transformDataClasses(List<String> lines, List<String> newAttributes) {
+		//Vo and Entity
 		final Optional<String> private_string_name = lines.stream()
 				.filter(line -> line.contains("private String name"))
 				.findAny();
@@ -92,7 +94,16 @@ public class GenerateCRUD {
 			final int indexOf = lines.indexOf(private_string_name.get());
 			newAttributes.forEach(newAttribute -> lines.add(indexOf + 1, private_string_name.get().replace("name", newAttribute)));
 			lines.remove(indexOf);
+		}
 
+		//service
+		final Optional<String> updaterLine = lines.stream()
+				.filter(line -> line.contains("entity.setName"))
+				.findAny();
+		if (updaterLine.isPresent()) {
+			final int indexOf = lines.indexOf(updaterLine.get());
+			newAttributes.forEach(newAttribute -> lines.add(indexOf + 1, updaterLine.get().replaceAll(capitalizeFirstLetter("name"), capitalizeFirstLetter(newAttribute))));
+			lines.remove(indexOf);
 		}
 		return lines;
 	}
