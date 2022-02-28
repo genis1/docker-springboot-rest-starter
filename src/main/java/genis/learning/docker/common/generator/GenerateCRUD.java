@@ -22,20 +22,18 @@ import static org.apache.tomcat.util.buf.StringUtils.join;
 public class GenerateCRUD {
 	private final static String templateName = "version";
 	private final static String templatePackageName = "versioning";
-	private final static String generatedName = "version";
-	private final static String generatedPackageName = "versioning";
-
 	private final static String templateLocation = "src/main/java/genis/learning/docker/" + templatePackageName;
-	private final static String generatedLocation = "src/main/java/genis/learning/docker/" + generatedPackageName;
 	private final static String templatePackageRoot = "genis.learning.docker." + templatePackageName;
-	private final static String generatedPackageRoot = "genis.learning.docker." + generatedPackageName;
+	private final static String TemplateName = capitalizeFirstLetter(templateName);
+	private final static String TEMPLATE_NAME = templateName.toUpperCase();
 
-	private static final String TemplateName = capitalizeFirstLetter(templateName);
-	private static final String TEMPLATE_NAME = templateName.toUpperCase();
-	private static final String GeneratedName = capitalizeFirstLetter(generatedName);
-	private static final String GENERATED_NAME = generatedName.toUpperCase();
+	private final String generatedName;
+	private final String generatedLocation;
+	private final String generatedPackageRoot;
+	private final String GeneratedName;
+	private final String GENERATED_NAME;
 
-	private static final List<String> generatedAttributes = List.of("name"); //Reversed order.
+	private final List<String> generatedAttributes; //Reversed order.
 
 	private static final String script = "\n" +
 			"-- changeset genis.guillem.mimo:create-table-versions\n" +
@@ -47,25 +45,43 @@ public class GenerateCRUD {
 			");\n";
 
 
-	public static void main(String[] args) throws IOException {
+	public GenerateCRUD(String generatedName, String generatedPackageName, List<String> generatedAttributes) {
+		this.generatedName = generatedName;
+		this.generatedAttributes = generatedAttributes;
+		this.generatedLocation = "src/main/java/genis/learning/docker/" + generatedPackageName.replaceAll("\\.","/");
+		this.generatedPackageRoot = "genis.learning.docker." + generatedPackageName;
+		this.GeneratedName = capitalizeFirstLetter(generatedName);
+		this.GENERATED_NAME = generatedName.toUpperCase();
+	}
+
+	public GenerateCRUD(String generatedName, String generatedPackageName, String generatedPackageLocation, List<String> generatedAttributes) {
+		this.generatedName = generatedName;
+		this.generatedAttributes = generatedAttributes;
+		this.generatedLocation = "src/main/java/genis/learning/docker/" + generatedPackageName;
+		this.generatedPackageRoot = "genis.learning.docker." + generatedPackageName;
+		this.GeneratedName = capitalizeFirstLetter(generatedName);
+		this.GENERATED_NAME = generatedName.toUpperCase();
+	}
+
+	public void generate() throws IOException {
 
 		final Path templatePath = Path.of(templateLocation);
 		Files.walk(templatePath)
 				.filter(Files::isRegularFile)
-				.forEach(GenerateCRUD::copyPath);
+				.forEach(this::copyPath);
 
 		final List<String> splittedScript = Arrays.stream(script.split("\n")).collect(Collectors.toList());
-		final List<String> newSplittedScript = transformScriptClasses(splittedScript, generatedAttributes);
+		final List<String> newSplittedScript = transformScriptClasses(splittedScript, this.generatedAttributes);
 		Files.write(
 				Paths.get("src/main/resources/db/changelog/base_changelog.sql"),
 				join(newSplittedScript, '\n').getBytes(),
 				StandardOpenOption.APPEND);
 	}
 
-	private static void copyPath(Path path) {
+	private void copyPath(Path path) {
 		try {
 			final List<String> lines = Files.readAllLines(path);
-			final List<String> transformedLines = lines.stream().map(GenerateCRUD::transformString)
+			final List<String> transformedLines = lines.stream().map(this::transformString)
 					.collect(Collectors.toList());
 			final List<String> transformedDataClasses = transformDataClasses(transformedLines, generatedAttributes);
 			final File newFile = new File(transformString(path.toString()));
@@ -76,13 +92,13 @@ public class GenerateCRUD {
 		}
 	}
 
-	private static String transformString(String line) {
+	private String transformString(String line) {
 		return line
-				.replace(templateLocation, generatedLocation)
-				.replace(templatePackageRoot, generatedPackageRoot)
-				.replaceAll(templateName, generatedName)
-				.replaceAll(TemplateName, GeneratedName)
-				.replaceAll(TEMPLATE_NAME, GENERATED_NAME);
+				.replace(templateLocation, this.generatedLocation)
+				.replace(templatePackageRoot, this.generatedPackageRoot)
+				.replaceAll(templateName, this.generatedName)
+				.replaceAll(TemplateName, this.GeneratedName)
+				.replaceAll(TEMPLATE_NAME, this.GENERATED_NAME);
 	}
 
 	private static List<String> transformDataClasses(List<String> lines, List<String> newAttributes) {
@@ -108,9 +124,9 @@ public class GenerateCRUD {
 		return lines;
 	}
 
-	private static List<String> transformScriptClasses(List<String> lines, List<String> newAttributes) {
+	private List<String> transformScriptClasses(List<String> lines, List<String> newAttributes) {
 		final List<String> transformedLines = lines.stream()
-				.map(GenerateCRUD::transformString)
+				.map(this::transformString)
 				.collect(Collectors.toList());
 		final Optional<String> private_string_name = transformedLines.stream()
 				.filter(line -> line.contains("name"))
