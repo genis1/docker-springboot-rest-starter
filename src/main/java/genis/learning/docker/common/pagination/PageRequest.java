@@ -1,6 +1,6 @@
-package genis.learning.docker.pagination;
+package genis.learning.docker.common.pagination;
 
-import genis.learning.docker.exception.IllegalUserInputException;
+import genis.learning.docker.common.exception.IllegalUserInputException;
 import lombok.Data;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.ObjectUtils;

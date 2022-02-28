@@ -1,12 +1,7 @@
-package genis.learning.docker.service;
+package genis.learning.docker.customers;
 
-import genis.learning.docker.entities.CustomerEntity;
-import genis.learning.docker.exception.IllegalUserInputException;
-import genis.learning.docker.mappers.CustomerMapper;
-import genis.learning.docker.pagination.PageRequest;
-import genis.learning.docker.repository.CustomerRepository;
-import genis.learning.docker.vo.CustomerDataVo;
-import genis.learning.docker.vo.CustomerVo;
+import genis.learning.docker.common.exception.IllegalUserInputException;
+import genis.learning.docker.common.pagination.PageRequest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

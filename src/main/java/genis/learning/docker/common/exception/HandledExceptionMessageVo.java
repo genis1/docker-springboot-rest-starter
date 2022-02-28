@@ -1,6 +1,5 @@
-package genis.learning.docker.exception;
+package genis.learning.docker.common.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

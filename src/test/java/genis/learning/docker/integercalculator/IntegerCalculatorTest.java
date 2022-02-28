@@ -1,7 +1,6 @@
-package genis.learning.docker;
+package genis.learning.docker.integercalculator;
 
-import genis.learning.docker.exception.IllegalUserInputException;
-import genis.learning.docker.service.IntegerCalculatorService;
+import genis.learning.docker.common.exception.IllegalUserInputException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

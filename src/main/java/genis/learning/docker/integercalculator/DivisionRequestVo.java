@@ -1,4 +1,4 @@
-package genis.learning.docker.vo;
+package genis.learning.docker.integercalculator;
 
 import lombok.Data;
 

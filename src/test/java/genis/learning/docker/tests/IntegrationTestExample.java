@@ -1,4 +1,4 @@
-package genis.learning.docker;
+package genis.learning.docker.tests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,5 @@
-package genis.learning.docker.mappers;
+package genis.learning.docker.customers;
 
-import genis.learning.docker.entities.CustomerEntity;
-import genis.learning.docker.vo.CustomerDataVo;
-import genis.learning.docker.vo.CustomerVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

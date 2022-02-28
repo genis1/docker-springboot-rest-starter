@@ -1,4 +1,4 @@
-package genis.learning.docker.exception;
+package genis.learning.docker.common.exception;
 
 public class IllegalUserInputException extends RuntimeException {
 	public IllegalUserInputException(String message) {

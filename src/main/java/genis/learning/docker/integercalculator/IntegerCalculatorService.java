@@ -1,6 +1,6 @@
-package genis.learning.docker.service;
+package genis.learning.docker.integercalculator;
 
-import genis.learning.docker.exception.IllegalUserInputException;
+import genis.learning.docker.common.exception.IllegalUserInputException;
 import org.springframework.stereotype.Service;
 
 @Service

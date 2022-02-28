@@ -1,4 +1,4 @@
-package genis.learning.docker.entities;
+package genis.learning.docker.customers;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

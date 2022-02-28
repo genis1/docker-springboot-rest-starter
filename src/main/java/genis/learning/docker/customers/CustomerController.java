@@ -1,10 +1,7 @@
-package genis.learning.docker.controller;
+package genis.learning.docker.customers;
 
-import genis.learning.docker.pagination.PageRequest;
-import genis.learning.docker.pagination.PaginationExceptionMessage;
-import genis.learning.docker.service.CustomerService;
-import genis.learning.docker.vo.CustomerDataVo;
-import genis.learning.docker.vo.CustomerVo;
+import genis.learning.docker.common.pagination.PageRequest;
+import genis.learning.docker.common.pagination.PaginationExceptionMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static genis.learning.docker.service.CustomerService.*;
+import static genis.learning.docker.customers.CustomerService.*;
 
 @RestController
 @RequestMapping("customer")
