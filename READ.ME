@@ -1,7 +1,9 @@
 #Instructions to build the application using docker.
 #Gradle version should be 7.3.3 or older. JVM of gradle should be 11 or older.
+#Gradle build will run tests.
 gradle build
 docker build --build-arg JAR_FILE=build/libs/\*.jar -t docker-test .
+#The previous command will create an image that has to be run in a container.
 
 #Instructions to deploy
 A database with the proper name should have been created before deploying the application.
