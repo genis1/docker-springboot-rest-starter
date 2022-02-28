@@ -6,7 +6,6 @@ import genis.learning.docker.versioning.vo.VersionVo;
 import org.springframework.data.domain.Page;
 
 public interface VersionService {
-	String VERSION_NAME_CANNOT_BE_EMTPY = "Version name cannot be emtpy.";
 	String VERSION_ID_DOES_NOT_EXIST = "Version id does not exist.";
 	String VERSION_CANNOT_BE_SORTED_BY_THE_SPECIFIED_PROPERTY = "Version cannot be sorted by the specified property.";
 

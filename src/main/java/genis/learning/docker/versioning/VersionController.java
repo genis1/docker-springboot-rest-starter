@@ -28,10 +28,6 @@ import static genis.learning.docker.versioning.VersionService.*;
 		@Tag(name = "Version", description = "Version CRUD.")})
 public class VersionController {
 
-	private static final String VERSION_VO_EXAMPLE = "{\n" +
-			"  \"id\": 23,\n" +
-			"  \"name\": \"foo\"\n" +
-			"}";
 	private final VersionService service;
 
 	public VersionController(VersionService service) {
@@ -46,10 +42,8 @@ public class VersionController {
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Request successful.",
 							content = @Content(
-									examples = @ExampleObject(value = VERSION_VO_EXAMPLE),
 									schema = @Schema(implementation = VersionVo.class)
-							)),
-					@ApiResponse(responseCode = "422", description = VERSION_NAME_CANNOT_BE_EMTPY)
+							))
 			}
 	)
 	public VersionVo createVersion(@RequestBody VersionDataVo versionDataVo) {
@@ -64,7 +58,6 @@ public class VersionController {
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Request successful.",
 							content = @Content(
-									examples = @ExampleObject(value = VERSION_VO_EXAMPLE),
 									schema = @Schema(implementation = VersionVo.class)
 							)),
 					@ApiResponse(responseCode = "422", description = VERSION_ID_DOES_NOT_EXIST)
@@ -105,11 +98,9 @@ public class VersionController {
 			responses = {
 					@ApiResponse(responseCode = "200", description = "Request successful.",
 							content = @Content(
-									examples = @ExampleObject(value = VERSION_VO_EXAMPLE),
 									schema = @Schema(implementation = VersionVo.class)
 							)),
-					@ApiResponse(responseCode = "422", description = VERSION_NAME_CANNOT_BE_EMTPY + "\r\n" +
-							VERSION_ID_DOES_NOT_EXIST)
+					@ApiResponse(responseCode = "422", description = VERSION_ID_DOES_NOT_EXIST)
 			}
 	)
 	ResponseEntity<VersionVo> updateVersion(

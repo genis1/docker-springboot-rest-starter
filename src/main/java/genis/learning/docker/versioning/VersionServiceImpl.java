@@ -29,7 +29,6 @@ public class VersionServiceImpl implements VersionService{
 
 	@Override
 	public VersionVo create(VersionDataVo versionVo) {
-		validateVersionName(versionVo.getName());
 		return mapper.toVo(repository.save(mapper.toEntity(versionVo)));
 	}
 
@@ -53,8 +52,6 @@ public class VersionServiceImpl implements VersionService{
 
 	@Override
 	public VersionVo update(Integer id, VersionDataVo versionDataVo){
-		validateVersionName(versionDataVo.getName());
-
 		final VersionEntity entity = repository.getById(id);
 
 		//Update fields
@@ -74,10 +71,5 @@ public class VersionServiceImpl implements VersionService{
 		} catch (EmptyResultDataAccessException e) {
 			throw new IllegalUserInputException(VERSION_ID_DOES_NOT_EXIST_MESSAGE_BUILDER.apply(id));
 		}
-	}
-
-	private void validateVersionName(String versionName) {
-		if (ObjectUtils.isEmpty(versionName))
-			throw new IllegalUserInputException(VERSION_NAME_CANNOT_BE_EMTPY);
 	}
 }
