@@ -35,7 +35,7 @@ public class GenerateCRUD {
 	private static final String GeneratedName = capitalizeFirstLetter(generatedName);
 	private static final String GENERATED_NAME = generatedName.toUpperCase();
 
-	private static final List<String> generatedAttributes = List.of("name"); //Reversed order, name is mandatory.
+	private static final List<String> generatedAttributes = List.of("name"); //Reversed order.
 
 	private static final String script = "\n" +
 			"-- changeset genis.guillem.mimo:create-table-versions\n" +
