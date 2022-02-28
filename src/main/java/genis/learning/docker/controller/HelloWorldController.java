@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 		@Tag(name = "Testing", description = "Endpoints used to test integration with the application.")})
 public class HelloWorldController {
 
+	public static final String HELLO_WORLD = "Hello, world!";
 	private final IntegerCalculatorService service;
 
 	public HelloWorldController(IntegerCalculatorService service) {
@@ -30,7 +31,7 @@ public class HelloWorldController {
 			description = "Unsecured endpoint used to test connection.",
 			operationId = "testHelloWorld")
 	String helloWorld() {
-		return "Hello, world!";
+		return HELLO_WORLD;
 	}
 
 	@GetMapping("echo/{message}")
