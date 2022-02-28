@@ -136,7 +136,7 @@ public class CustomerController {
 	}
 
 	/**
-	 * This classed is only used to define the swagger schema annotation.
+	 * This class is only used to define the swagger schema annotation.
 	 */
 	private abstract static class PageImplCustomer extends PageImpl<CustomerVo> {
 		public PageImplCustomer(List<CustomerVo> content, Pageable pageable, long total) {
