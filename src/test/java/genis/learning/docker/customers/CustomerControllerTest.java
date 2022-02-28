@@ -1,4 +1,4 @@
-package genis.learning.docker.customer;
+package genis.learning.docker.customers;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
