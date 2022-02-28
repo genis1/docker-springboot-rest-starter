@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-public class HelloWorldTest {
+public class ControllerIntegrationTestExample {
 
 
 	private static final String MESSAGE = "message";
