@@ -4,33 +4,18 @@ import genis.learning.docker.exception.IllegalUserInputException;
 import genis.learning.docker.service.IntegerCalculatorService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnJre;
-import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-class DockerTestApplicationTests {
+public class IntegerCalculatorTest {
 
 	private final IntegerCalculatorService calculator;
 
-	public DockerTestApplicationTests() {
+	public IntegerCalculatorTest() {
 		calculator = new IntegerCalculatorService();
-	}
-
-
-	@Test
-	void contextLoads() {
-	}
-
-	@Test
-	@DisabledOnJre(JRE.JAVA_17)
-	@DisplayName("Should be running on java 17.")
-	void failIfNotRunningOnJava17() {
-		fail(() -> "Running on " + System.getProperty("java.version"));
 	}
 
 	@ParameterizedTest(name = "Test {0}/{1}={2}")
@@ -46,5 +31,4 @@ class DockerTestApplicationTests {
 		final IllegalUserInputException illegalUserInputException = assertThrows(IllegalUserInputException.class, () -> calculator.divide(2f, 0f));
 		assertEquals(illegalUserInputException.getMessage(), IntegerCalculatorService.DIVISOR_CANNOT_BE_0);
 	}
-
 }
